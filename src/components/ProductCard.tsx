@@ -82,13 +82,13 @@ export default function ProductCard({ product, index, onAddToCart, onViewDetail 
 
         {/* Price & Add to Cart */}
         <div className="flex items-center justify-between">
-          <div>
+          <div className="py-2">
             <span className="font-display text-2xl font-extrabold text-berry">${product.price}</span>
             <span className="uppercase text-[9px] text-cocoa/50 ml-1.5">TWD</span>
           </div>
           <motion.button
             onClick={() => onAddToCart(product)}
-            className="uppercase flex items-center gap-1.5 px-3 sm:px-4 py-2.5 bg-cocoa hover:bg-cocoa-deep text-cream text-[11px] font-semibold transition-colors"
+            className="uppercase flex items-center gap-1.5 px-3 sm:px-4 py-3 bg-cocoa hover:bg-cocoa-deep text-cream text-[11px] font-semibold transition-colors"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
           >

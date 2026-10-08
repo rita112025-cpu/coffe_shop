@@ -10,8 +10,8 @@
   --color-berry: #9e2b4e;
   --color-pistachio: #7fa05b;
 
-  --font-display: 'Fraunces', 'Noto Serif TC', serif;
-  --font-body: 'Spectral', 'Noto Serif TC', serif;
+  --font-display: 'Noto Serif TC', 'Source Han Serif TC', serif;
+  --font-body: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   --font-label: 'Archivo', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
 }
 
