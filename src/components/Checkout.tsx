@@ -65,7 +65,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-cocoa-deep/80 backdrop-blur-sm z-50"
             onClick={step === 'form' ? onClose : undefined}
           />
 
@@ -78,14 +78,14 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
             role="dialog"
             aria-modal="true"
             aria-label="結帳"
-            className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl z-50"
+            className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-md max-h-[90vh] overflow-y-auto bg-paper rounded-sm sm:rounded-sm shadow-2xl z-50 border-2 border-gold/70"
           >
             {/* Close Button */}
             {step === 'form' && (
               <button
                 onClick={onClose}
                 aria-label="關閉結帳"
-                className="absolute top-4 right-4 z-10 w-8 h-8 bg-amber-50 hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors"
+                className="absolute top-4 right-4 z-10 w-8 h-8 bg-cream hover:bg-cream-dark rounded-full flex items-center justify-center text-cocoa/80 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -94,73 +94,73 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
             {step === 'form' && (
               <div className="p-5 sm:p-7">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-amber-700" />
+                  <div className="w-10 h-10 bg-cream-dark rounded-full flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-cocoa/80" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-amber-950">結帳</h2>
-                    <p className="text-xs text-amber-500">填寫資料完成訂單</p>
+                    <h2 className="text-lg font-bold text-cocoa-deep">結帳</h2>
+                    <p className="text-xs text-berry">填寫資料完成訂單</p>
                   </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Name */}
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cocoa/50" />
                     <input
                       type="text"
                       placeholder="姓名"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 bg-amber-50/50 border border-amber-100 rounded-xl text-sm text-amber-900 placeholder-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300 transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-cream/50 border border-cocoa/15 rounded-sm text-sm text-cocoa placeholder-cocoa/50 focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold/60 transition-all"
                     />
                   </div>
 
                   {/* Email */}
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cocoa/50" />
                     <input
                       type="email"
                       placeholder="電子郵件"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 bg-amber-50/50 border border-amber-100 rounded-xl text-sm text-amber-900 placeholder-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300 transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-cream/50 border border-cocoa/15 rounded-sm text-sm text-cocoa placeholder-cocoa/50 focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold/60 transition-all"
                     />
                   </div>
 
                   {/* Phone */}
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cocoa/50" />
                     <input
                       type="tel"
                       placeholder="聯絡電話"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 bg-amber-50/50 border border-amber-100 rounded-xl text-sm text-amber-900 placeholder-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300 transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-cream/50 border border-cocoa/15 rounded-sm text-sm text-cocoa placeholder-cocoa/50 focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold/60 transition-all"
                     />
                   </div>
 
                   {/* Address */}
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-amber-400" />
+                    <MapPin className="absolute left-3 top-3 w-4 h-4 text-cocoa/50" />
                     <textarea
                       placeholder="配送地址"
                       required
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       rows={2}
-                      className="w-full pl-10 pr-4 py-3 bg-amber-50/50 border border-amber-100 rounded-xl text-sm text-amber-900 placeholder-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-300 transition-all resize-none"
+                      className="w-full pl-10 pr-4 py-3 bg-cream/50 border border-cocoa/15 rounded-sm text-sm text-cocoa placeholder-cocoa/50 focus:outline-none focus:ring-2 focus:ring-gold/60 focus:border-gold/60 transition-all resize-none"
                     />
                   </div>
 
                   {/* Payment Method */}
                   <div>
-                    <p className="text-xs font-medium text-amber-700 mb-2 uppercase tracking-wide">付款方式</p>
+                    <p className="text-xs font-medium text-cocoa/80 mb-2 uppercase tracking-wide">付款方式</p>
                     <div className="grid grid-cols-2 gap-2">
-                      <label className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${formData.payment === 'credit' ? 'bg-amber-50 border-amber-300' : 'bg-white border-amber-100 hover:border-amber-200'}`}>
+                      <label className={`flex items-center gap-2 p-3 rounded-sm border cursor-pointer transition-all ${formData.payment === 'credit' ? 'bg-cream border-gold/60' : 'bg-paper border-cocoa/15 hover:border-cocoa/25'}`}>
                         <input
                           type="radio"
                           name="payment"
@@ -169,10 +169,10 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                           onChange={() => setFormData({ ...formData, payment: 'credit' })}
                           className="sr-only"
                         />
-                        <CreditCard className="w-4 h-4 text-amber-600" />
-                        <span className="text-sm text-amber-800">信用卡</span>
+                        <CreditCard className="w-4 h-4 text-cocoa/70" />
+                        <span className="text-sm text-cocoa">信用卡</span>
                       </label>
-                      <label className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${formData.payment === 'cod' ? 'bg-amber-50 border-amber-300' : 'bg-white border-amber-100 hover:border-amber-200'}`}>
+                      <label className={`flex items-center gap-2 p-3 rounded-sm border cursor-pointer transition-all ${formData.payment === 'cod' ? 'bg-cream border-gold/60' : 'bg-paper border-cocoa/15 hover:border-cocoa/25'}`}>
                         <input
                           type="radio"
                           name="payment"
@@ -181,22 +181,22 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                           onChange={() => setFormData({ ...formData, payment: 'cod' })}
                           className="sr-only"
                         />
-                        <Truck className="w-4 h-4 text-amber-600" />
-                        <span className="text-sm text-amber-800">貨到付款</span>
+                        <Truck className="w-4 h-4 text-cocoa/70" />
+                        <span className="text-sm text-cocoa">貨到付款</span>
                       </label>
                     </div>
                   </div>
 
                   {/* Order Summary */}
-                  <div className="bg-amber-50/80 rounded-xl p-4 border border-amber-100">
-                    <p className="text-xs font-medium text-amber-600 mb-2 uppercase tracking-wide">訂單摘要</p>
+                  <div className="bg-cream/80 rounded-sm p-4 border border-cocoa/15">
+                    <p className="text-xs font-medium text-cocoa/70 mb-2 uppercase tracking-wide">訂單摘要</p>
                     {cartItems.map((item) => (
-                      <div key={item.product.id} className="flex justify-between text-sm text-amber-700 py-1">
+                      <div key={item.product.id} className="flex justify-between text-sm text-cocoa/80 py-1">
                         <span>{item.product.name} × {item.quantity}</span>
                         <span>${(item.product.price * item.quantity).toLocaleString()}</span>
                       </div>
                     ))}
-                    <div className="flex justify-between text-base font-bold text-amber-900 pt-2 mt-2 border-t border-amber-200/50">
+                    <div className="flex justify-between text-base font-bold text-cocoa pt-2 mt-2 border-t border-cocoa/25">
                       <span>總計</span>
                       <span>${total.toLocaleString()} TWD</span>
                     </div>
@@ -205,7 +205,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   {/* Submit */}
                   <motion.button
                     type="submit"
-                    className="w-full py-3.5 bg-gradient-to-r from-amber-800 to-amber-700 hover:from-amber-700 hover:to-amber-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
+                    className="w-full py-3.5 bg-gradient-to-r from-cocoa to-cocoa-deep hover:from-cocoa-deep hover:to-cocoa/70 text-white font-bold rounded-sm shadow-lg hover:shadow-xl transition-all"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -220,10 +220,10 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-                  className="w-16 h-16 border-4 border-amber-200 border-t-amber-600 rounded-full mb-6"
+                  className="w-16 h-16 border-4 border-cocoa/25 border-t-amber-600 rounded-full mb-6"
                 />
-                <h3 className="text-lg font-bold text-amber-900 mb-2">處理中...</h3>
-                <p className="text-sm text-amber-600">正在確認您的訂單</p>
+                <h3 className="text-lg font-bold text-cocoa mb-2">處理中...</h3>
+                <p className="text-sm text-cocoa/70">正在確認您的訂單</p>
               </div>
             )}
 
@@ -233,15 +233,15 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', damping: 10, stiffness: 200 }}
-                  className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6"
+                  className="w-20 h-20 bg-pistachio/25 rounded-full flex items-center justify-center mb-6"
                 >
-                  <Check className="w-10 h-10 text-green-600" />
+                  <Check className="w-10 h-10 text-pistachio" />
                 </motion.div>
                 <motion.h3
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="text-xl font-bold text-amber-900 mb-2"
+                  className="text-xl font-bold text-cocoa mb-2"
                 >
                   訂單已確認！
                 </motion.h3>
@@ -249,7 +249,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="text-sm text-amber-600 mb-2"
+                  className="text-sm text-cocoa/70 mb-2"
                 >
                   感謝您的購買，我們將盡快為您出貨
                 </motion.p>
@@ -257,7 +257,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="text-xs text-amber-400 mb-6"
+                  className="text-xs text-cocoa/50 mb-6"
                 >
                   訂單編號：{orderNumber}
                 </motion.p>
@@ -265,13 +265,13 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.55 }}
-                  className="w-full bg-amber-50/80 rounded-xl p-4 border border-amber-100 mb-6 space-y-1 text-sm text-amber-700"
+                  className="w-full bg-cream/80 rounded-sm p-4 border border-cocoa/15 mb-6 space-y-1 text-sm text-cocoa/80"
                 >
                   <div className="flex justify-between">
                     <span>商品數量</span>
                     <span>{completedOrder.itemCount} 件</span>
                   </div>
-                  <div className="flex justify-between font-bold text-amber-900">
+                  <div className="flex justify-between font-bold text-cocoa">
                     <span>訂單總額</span>
                     <span>${completedOrder.total.toLocaleString()} TWD</span>
                   </div>
@@ -281,7 +281,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
                   onClick={handleComplete}
-                  className="px-8 py-3 bg-amber-800 hover:bg-amber-700 text-white font-medium rounded-full transition-colors"
+                  className="px-8 py-3 bg-cocoa hover:bg-cocoa-deep text-white font-medium rounded-full transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
