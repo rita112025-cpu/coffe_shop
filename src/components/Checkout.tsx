@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CreditCard, Check, Truck, MapPin, User, Mail, Phone } from 'lucide-react';
 import { CartItem } from '../types';
@@ -20,12 +20,31 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
     payment: 'credit',
   });
 
+  const [orderNumber, setOrderNumber] = useState('');
+  const [completedOrder, setCompletedOrder] = useState({ orderNumber: '', itemCount: 0, total: 0 });
+
+  useEffect(() => {
+    if (!isOpen || step !== 'form') return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, step, onClose]);
+
   const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const snapshotTotal = total;
     setStep('processing');
     setTimeout(() => {
+      const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+      const random = Math.floor(1000 + Math.random() * 9000);
+      const number = `EB-${date}-${random}`;
+      setOrderNumber(number);
+      setCompletedOrder({ orderNumber: number, itemCount, total: snapshotTotal });
       setStep('success');
     }, 2000);
   };
@@ -33,6 +52,7 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
   const handleComplete = () => {
     onComplete();
     setStep('form');
+    setOrderNumber('');
     setFormData({ name: '', email: '', phone: '', address: '', payment: 'credit' });
   };
 
@@ -55,12 +75,16 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="結帳"
             className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-md max-h-[90vh] overflow-y-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl z-50"
           >
             {/* Close Button */}
             {step === 'form' && (
               <button
                 onClick={onClose}
+                aria-label="關閉結帳"
                 className="absolute top-4 right-4 z-10 w-8 h-8 bg-amber-50 hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors"
               >
                 <X className="w-4 h-4" />
@@ -235,8 +259,23 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                   transition={{ delay: 0.5 }}
                   className="text-xs text-amber-400 mb-6"
                 >
-                  訂單編號：#{Math.random().toString(36).substring(2, 10).toUpperCase()}
+                  訂單編號：{orderNumber}
                 </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                  className="w-full bg-amber-50/80 rounded-xl p-4 border border-amber-100 mb-6 space-y-1 text-sm text-amber-700"
+                >
+                  <div className="flex justify-between">
+                    <span>商品數量</span>
+                    <span>{completedOrder.itemCount} 件</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-amber-900">
+                    <span>訂單總額</span>
+                    <span>${completedOrder.total.toLocaleString()} TWD</span>
+                  </div>
+                </motion.div>
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

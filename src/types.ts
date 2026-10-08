@@ -7,6 +7,7 @@ export interface Product {
   description: string;
   origin: string;
   roast: string;
+  process: string;
   flavor: string[];
   image: string;
   emoji: string;

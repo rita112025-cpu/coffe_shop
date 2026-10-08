@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, MapPin, Flame, Tag } from 'lucide-react';
+import { X, Minus, Plus, MapPin, Flame, Tag, Settings2 } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProductDetailProps {
@@ -10,10 +11,25 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail({ product, isOpen, onClose, onAddToCart }: ProductDetailProps) {
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [product?.id, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
+
   if (!product) return null;
 
-  const handleAdd = (qty: number) => {
-    onAddToCart(product, qty);
+  const handleAdd = () => {
+    onAddToCart(product, quantity);
     onClose();
   };
 
@@ -36,11 +52,15 @@ export default function ProductDetail({ product, isOpen, onClose, onAddToCart }:
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={product.name}
             className="fixed inset-x-4 sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-full sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl sm:rounded-3xl shadow-2xl z-50"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
+              aria-label="關閉商品詳情"
               className="absolute top-4 right-4 z-10 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-amber-800 hover:bg-amber-100 transition-colors shadow-sm"
             >
               <X className="w-4 h-4" />
@@ -82,7 +102,7 @@ export default function ProductDetail({ product, isOpen, onClose, onAddToCart }:
               </p>
 
               {/* Details Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
                 <div className="flex items-center gap-2 p-3 bg-amber-50/80 rounded-xl">
                   <MapPin className="w-4 h-4 text-amber-600" />
                   <div>
@@ -95,6 +115,13 @@ export default function ProductDetail({ product, isOpen, onClose, onAddToCart }:
                   <div>
                     <p className="text-[10px] text-amber-500 uppercase tracking-wide">烘焙度</p>
                     <p className="text-xs sm:text-sm font-medium text-amber-900">{product.roast}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-3 bg-amber-50/80 rounded-xl">
+                  <Settings2 className="w-4 h-4 text-amber-600" />
+                  <div>
+                    <p className="text-[10px] text-amber-500 uppercase tracking-wide">處理法</p>
+                    <p className="text-xs sm:text-sm font-medium text-amber-900">{product.process}</p>
                   </div>
                 </div>
               </div>
@@ -125,22 +152,34 @@ export default function ProductDetail({ product, isOpen, onClose, onAddToCart }:
                   </span>
                   <span className="text-sm text-amber-500 ml-1">TWD</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      disabled={quantity <= 1}
+                      aria-label="減少數量"
+                      className="w-8 h-8 bg-white hover:bg-amber-100 disabled:opacity-40 rounded-full flex items-center justify-center text-amber-700 transition-colors shadow-sm border border-amber-100"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="w-6 text-center text-base font-bold text-amber-900" aria-live="polite">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity((q) => q + 1)}
+                      aria-label="增加數量"
+                      className="w-8 h-8 bg-white hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors shadow-sm border border-amber-100"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <motion.button
-                    onClick={() => handleAdd(1)}
+                    onClick={handleAdd}
                     className="px-4 sm:px-6 py-2.5 bg-amber-800 hover:bg-amber-700 text-white font-medium rounded-full shadow-md hover:shadow-lg transition-all text-sm sm:text-base"
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                   >
                     加入購物車
-                  </motion.button>
-                  <motion.button
-                    onClick={() => handleAdd(3)}
-                    className="px-4 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 font-medium rounded-full transition-all text-sm sm:text-base"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    +3
                   </motion.button>
                 </div>
               </div>

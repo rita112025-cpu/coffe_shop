@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Coffee, Sparkles } from 'lucide-react';
 import Header from './components/Header';
@@ -9,10 +9,49 @@ import Checkout from './components/Checkout';
 import { products, categories } from './data/products';
 import { Product, CartItem, Category } from './types';
 
+const CART_KEY = 'coffe_shop_cart';
+
+function loadCart(): CartItem[] {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) throw new Error('invalid cart');
+    return parsed.filter(
+      (item): item is CartItem =>
+        item &&
+        typeof item.quantity === 'number' &&
+        item.quantity > 0 &&
+        item.product &&
+        typeof item.product.id === 'number' &&
+        typeof item.product.price === 'number'
+    );
+  } catch {
+    try {
+      localStorage.removeItem(CART_KEY);
+    } catch {
+      // ignore storage errors
+    }
+    return [];
+  }
+}
+
+function saveCart(items: CartItem[]) {
+  try {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+  } catch {
+    // ignore storage errors
+  }
+}
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category>('全部');
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(loadCart);
+
+  useEffect(() => {
+    saveCart(cartItems);
+  }, [cartItems]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -22,11 +61,18 @@ function App() {
   // Filter products
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      const q = searchQuery.trim().toLowerCase();
       const matchesSearch =
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.nameEn.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.flavor.some((f) => f.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        product.origin.toLowerCase().includes(searchQuery.toLowerCase());
+        q === '' ||
+        [
+          product.name,
+          product.nameEn,
+          product.origin,
+          product.roast,
+          product.process,
+          product.category,
+          ...product.flavor,
+        ].some((field) => field.toLowerCase().includes(q));
       const matchesCategory = selectedCategory === '全部' || product.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });

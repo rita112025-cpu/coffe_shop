@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { CartItem } from '../types';
@@ -19,6 +20,15 @@ export default function Cart({
   onRemoveItem,
   onCheckout,
 }: CartProps) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
+
   const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -41,6 +51,9 @@ export default function Cart({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="購物車"
             className="fixed right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
@@ -56,6 +69,7 @@ export default function Cart({
               </div>
               <button
                 onClick={onClose}
+                aria-label="關閉購物車"
                 className="w-9 h-9 bg-white hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors shadow-sm"
               >
                 <X className="w-5 h-5" />
@@ -105,6 +119,7 @@ export default function Cart({
                         <div className="flex items-center gap-1.5">
                           <button
                             onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
+                            aria-label="減少數量"
                             className="w-7 h-7 bg-white hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors shadow-sm border border-amber-100"
                           >
                             <Minus className="w-3 h-3" />
@@ -114,6 +129,7 @@ export default function Cart({
                           </span>
                           <button
                             onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
+                            aria-label="增加數量"
                             className="w-7 h-7 bg-white hover:bg-amber-100 rounded-full flex items-center justify-center text-amber-700 transition-colors shadow-sm border border-amber-100"
                           >
                             <Plus className="w-3 h-3" />
@@ -123,6 +139,7 @@ export default function Cart({
                         {/* Remove */}
                         <button
                           onClick={() => onRemoveItem(item.product.id)}
+                          aria-label="移除商品"
                           className="w-7 h-7 hover:bg-red-50 rounded-full flex items-center justify-center text-amber-400 hover:text-red-500 transition-colors flex-shrink-0"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
