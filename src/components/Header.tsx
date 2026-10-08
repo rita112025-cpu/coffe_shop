@@ -81,7 +81,7 @@ export default function Header({
             whileTap={{ scale: 0.96 }}
           >
             <ShoppingBag className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-            <span className="uppercase text-[10px] hidden md:inline">Acquire</span>
+            <span className="uppercase text-[10px] hidden md:inline">購物車</span>
             <AnimatePresence>
               {totalItems > 0 && (
                 <motion.span

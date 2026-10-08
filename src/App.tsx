@@ -146,7 +146,7 @@ function App() {
               'radial-gradient(circle at 20% 15%, rgba(201,137,47,0.14) 0%, transparent 45%), radial-gradient(circle at 85% 85%, rgba(158,43,78,0.16) 0%, transparent 45%)',
           }}
         />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-10 sm:pb-14 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-9 pb-7 sm:pb-9 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
