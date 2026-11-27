@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CreditCard, Check, Truck, MapPin, User, Mail, Phone } from 'lucide-react';
 import { CartItem } from '../types';
+import { calcOrderTotals } from '../utils/pricing';
 
 interface CheckoutProps {
   isOpen: boolean;
@@ -32,11 +33,10 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen, step, onClose]);
 
-  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  const { shipping, total, itemCount } = calcOrderTotals(cartItems);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const snapshotTotal = total;
     setStep('processing');
     setTimeout(() => {
@@ -196,6 +196,10 @@ export default function Checkout({ isOpen, onClose, cartItems, onComplete }: Che
                         <span>${(item.product.price * item.quantity).toLocaleString()}</span>
                       </div>
                     ))}
+                    <div className="flex justify-between text-sm text-cocoa/80 py-1">
+                      <span>運費</span>
+                      <span>{shipping === 0 ? '免運費' : `$${shipping.toLocaleString()}`}</span>
+                    </div>
                     <div className="flex justify-between text-base font-bold text-cocoa pt-2 mt-2 border-t border-cocoa/25">
                       <span>總計</span>
                       <span>${total.toLocaleString()} TWD</span>
