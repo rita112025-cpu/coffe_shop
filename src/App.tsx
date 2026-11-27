@@ -266,7 +266,7 @@ function App() {
           <AnimatePresence mode="wait">
             {filteredProducts.length > 0 ? (
               <motion.div
-                key={selectedCategory + searchQuery}
+                key={selectedCategory}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

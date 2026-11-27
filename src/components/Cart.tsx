@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { CartItem } from '../types';
+import { calcOrderTotals } from '../utils/pricing';
 
 interface CartProps {
   isOpen: boolean;
@@ -29,8 +30,13 @@ export default function Cart({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [isOpen, onClose]);
 
-  const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const {
+    subtotal,
+    shipping,
+    total,
+    itemCount: totalItems,
+    remainingForFreeShipping,
+  } = calcOrderTotals(cartItems);
 
   return (
     <AnimatePresence>
@@ -162,12 +168,21 @@ export default function Cart({
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm text-cocoa/80">
                     <span>小計</span>
-                    <span>${total.toLocaleString()}</span>
+                    <span>${subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-sm text-cocoa/80">
                     <span>運費</span>
-                    <span className="text-pistachio font-medium">免運費</span>
+                    {shipping === 0 ? (
+                      <span className="text-pistachio font-medium">免運費</span>
+                    ) : (
+                      <span>${shipping.toLocaleString()}</span>
+                    )}
                   </div>
+                  {remainingForFreeShipping > 0 && (
+                    <p className="text-xs text-berry">
+                      再買 ${remainingForFreeShipping.toLocaleString()} 即可免運
+                    </p>
+                  )}
                   <div className="flex justify-between text-lg font-bold text-cocoa-deep pt-2 border-t border-cocoa/25">
                     <span>合計</span>
                     <span>${total.toLocaleString()} TWD</span>
